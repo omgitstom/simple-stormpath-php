@@ -27,7 +27,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$account->givenName = $_POST['firstName'];
 	$account->surname = $_POST['lastName'];
 
-	$account = $application->createAccount($account);
+	try{
+		$account = $application->createAccount($account);
+	}catch(\Stormpath\Resource\ResourceError $re){
+		$error = $re->getMessage();
+	}
 }
 ?>
 
@@ -86,9 +90,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		</fieldset>
 	</form>
 	<!--If post and account is created, display some info -->
-	<?php if ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
+	<?php if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($error)): ?>
 	<div>
 		<strong><span>Account HREF</span>: <span><?=$account->href ?></span> was created!</strong>
+	</div>
+	<?php else: ?>
+	<div>
+		<strong><span>Error</span>: <span><?=$error?></span></strong>
 	</div>
 	<?php endif ?>
 </body>
