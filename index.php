@@ -7,25 +7,26 @@ $app_href = 'https://api.stormpath.com/v1/applications/3QIMlJKKN2whGCYzXXw1t8';
 $builder = new \Stormpath\ClientBuilder();
 $client = $builder->setApiKeyFileLocation($apiKeyFile)->build();
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	$application = $client->
                dataStore->
                getResource($app_href, \Stormpath\Stormpath::APPLICATION);
-	}
+	
 	$account = $client->dataStore->instantiate(\Stormpath\Stormpath::ACCOUNT);
-	$account->email = $_POST[''];
+	$account->email = $_POST['email'];
+	$account->password = $_POST['password'];
+	$account->givenName = $_POST['firstName'];
+	$account->surname = $_POST['lastName'];
+
+	$account = $application->createAccount($account);
+}
 ?>
 
 <html>
 <head>
 </head>
 <body>
-	<h1><?php echo $application->name?></h1>
-	<h1><?php echo $account->email?></h1>
-	<h1><?php echo $account->password?></h1>
-	<h1><?php echo $account->givenName?></h1>
-	<h1><?php echo $account->surname?></h1>
 
 	<form class="form-horizontal" method="POST" target="_self">
 		<fieldset>
@@ -76,5 +77,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		</div>
 		</fieldset>
 	</form>
+	<!--If post and account is created, display some info -->
+	<?php if ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
+	<div>
+		<strong><span>Account HREF</span>: <span><?=$account->href ?></span> was created!</strong>
+	</div>
+	<?php endif ?>
 </body>
 </html>

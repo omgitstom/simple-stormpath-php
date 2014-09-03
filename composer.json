@@ -1,0 +1,5 @@
+ {
+   "require": {
+     "stormpath/sdk": "1.0.*@beta"
+   }
+ }
