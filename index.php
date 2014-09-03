@@ -1,12 +1,20 @@
 <?php
 require 'vendor/autoload.php';
 
+//Simple variables to initialize - Please change these
 $apiKeyFile = '/Users/tom/.stormpath/apiKey.properties';
 $app_href = 'https://api.stormpath.com/v1/applications/3QIMlJKKN2whGCYzXXw1t8';
-//Initialize everything for Stormpath
+
+//Initialize the client for Stormpath
 $builder = new \Stormpath\ClientBuilder();
 $client = $builder->setApiKeyFileLocation($apiKeyFile)->build();
 
+/*
+  When there is a POST, we want to get the application 
+  (which was the app href above), get the POST variable 
+  from the request, and create an account with them.
+
+*/
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	$application = $client->

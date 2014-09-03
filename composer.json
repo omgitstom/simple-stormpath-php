@@ -1,3 +1,5 @@
+ /* Use composer to install the Stormpath SDK*/
+ 
  {
    "require": {
      "stormpath/sdk": "1.0.*@beta"
